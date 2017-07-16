@@ -23,6 +23,8 @@ npm start
 # screen -dmS weixin-mp-remind node weixin24.js
 ```
 
+trafik中应该开启/wechat和/remind两个地址的映射。
+
 # /remind/new 引导用户进入页面
 
 需要在沙盒中配置“网页授权获取用户基本信息”中的域名，也可以是IP：
