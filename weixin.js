@@ -11,7 +11,7 @@ var config = require('./package.json').config;
 
 var fs = require('fs')
   , Log = require('log')
-  , log = new Log('debug', fs.createWriteStream(config.logfile));
+  , log = new Log('debug', fs.createWriteStream(config.logfile, {flags: 'a+'}));
 
 var app = connect();
 
