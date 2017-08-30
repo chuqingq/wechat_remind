@@ -16,10 +16,11 @@ mongod -f mongodb.conf
 ctrl-a ctrl-d
 ```
 
-or
+or simply:
+
 ```
-cd mongodb
-mongod --dbpath `pwd`
+cd wechat_remind/mongodb
+nohup mongod --dbpath `pwd` >> mongodb.log &
 ```
 
 # start
