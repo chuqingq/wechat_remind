@@ -14,20 +14,17 @@ Copy and modify `/etc/mongodb.conf`, `bind_ip` 127.0.0.1 and `logfile` xxx.
 screen
 mongod -f mongodb.conf
 ctrl-a ctrl-d
+# wechat_remind/mongodb
+# nohup mongod --dbpath `pwd` >> mongodb.log &
 ```
 
-or simply:
-
-```
-cd wechat_remind/mongodb
-nohup mongod --dbpath `pwd` >> mongodb.log &
-```
 
 # start
 
 ```
 npm start
 # screen -dmS weixin-mp-remind node weixin24.js
+# nohup node weixin.js >> remind.log &
 ```
 
 trafik中应该开启/wechat和/remind两个地址的映射。
