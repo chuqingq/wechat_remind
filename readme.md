@@ -16,6 +16,12 @@ mongod -f mongodb.conf
 ctrl-a ctrl-d
 ```
 
+or
+```
+cd mongodb
+mongod --dbpath `pwd`
+```
+
 # start
 
 ```
