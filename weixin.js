@@ -1,4 +1,5 @@
 var process = require('process');
+var http = require('http');
 
 var wechat = require('wechat');
 var weapi = require('wechat-api');
@@ -93,6 +94,25 @@ app.use(config.urlprefix, wechat(config, wechat.text(function(message, req, res,
   }
 
   log.debug('/wechat event: ', message);
+  // query remind
+  if (message.EventKey == 'QUERY_REMIND') {
+      // 查询未处理的事项
+      collection.find({ishandled: false/*, user: result.data.openid*/}).toArray(function(err, docs) {
+        if (err) {
+          log.error('collection.find.toArray error: ', err);
+        if (err) {
+          log.error('collection.find.toArray error: ', err);
+          // res.end('collection.find.toArray error');
+          res.reply('query error');
+          return;
+        }
+        // res.end(JSON.stringify(docs, null, ' '));
+        res.reply(JSON.stringify(docs, null, ' '));
+      });
+      return;
+  }
+
+  // set remind
   var match = message.EventKey.match(/^SETREMIND_([0-9]+)$/)
   if (!res) {
     log.warn('非预期的eventkey: ', message.EventKey);
@@ -164,6 +184,20 @@ function handleDefault(user, res, data) {
 // text和voice均调此接口处理remind消息
 function handleMsg(user, content, res) {
   log.debug('handleMsg: ' + content);
+
+  // 打卡
+  if (content == '打卡') {
+    http.get('http://127.0.0.1:8090/click_card', (res2) => {
+      const { statusCode } = res2;
+      log.debug('click_card: ' + statusCode);
+      res.reply(''+statusCode);
+    }).on('error', (e) => {
+      log.error('click_card http error: ' + e.message);
+      res.reply('click_card error: ' + e.message);
+    });
+    return;
+  }
+
   var opts = {
     "query": content,
     "city": '南京',
@@ -233,5 +267,4 @@ var server = app.listen(config.listenport, function() {
 
   log.info('weixin app listening at http://%s:%s', host, port);
 });
-
 
